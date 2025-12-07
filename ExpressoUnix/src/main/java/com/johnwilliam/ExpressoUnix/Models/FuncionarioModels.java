@@ -1,62 +1,121 @@
 package com.johnwilliam.ExpressoUnix.Models;
 
-
+import com.johnwilliam.ExpressoUnix.Enums.Cargo;
+import com.johnwilliam.ExpressoUnix.Enums.StatusFuncionario;
 import jakarta.persistence.*;
-import java.time.LocalDate;
-import java.util.List;
 
 @Entity
+@Table(name = "funcionario")
 public class FuncionarioModels {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    @Column(name = "id_funcionario")
+    private Long id_funcionario;
 
-    @Column(nullable = false)
-    private String nome;
-    
+    @Column(name = "id_empresa", nullable = false)
+    private Long id_empresa;
+
+    @Column(name = "nome_funcionario", nullable = false)
+    private String nome_funcionario;
+
     @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
-    private String telefone;
+    private String senha;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Cargo cargo;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusFuncionario status;
 
     @Column(nullable = false)
-    private String cpf;
-
-    @Column(nullable = false)
-    private LocalDate dataNascimento;
-
-    @Column(nullable = false)
-    private String cargo;
-
-    @OneToMany(mappedBy = "funcionario", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    private List<VendaModels> vendas;
+    private String cnh;
 
     public FuncionarioModels() {}
 
-    public FuncionarioModels(String nome,String email,String telefone,String cpf, LocalDate dataNascimento, String cargo) {
-        this.nome = nome;
-        this.email=email;
-        this.telefone=telefone;
-        this.cpf=cpf;
-        this.dataNascimento = dataNascimento;
+    public FuncionarioModels(Long id_empresa,
+                             String nome_funcionario,
+                             String email,
+                             String senha,
+                             Cargo cargo,
+                             StatusFuncionario status,
+                             String cnh) {
+
+        this.id_empresa = id_empresa;
+        this.nome_funcionario = nome_funcionario;
+        this.email = email;
+        this.senha = senha;
+        this.cargo = cargo;
+        this.status = status;
+        this.cnh = cnh;
+    }
+
+    public Long getId_funcionario() {
+        return id_funcionario;
+    }
+
+    public void setId_funcionario(Long id_funcionario) {
+        this.id_funcionario = id_funcionario;
+    }
+
+    public Long getId_empresa() {
+        return id_empresa;
+    }
+
+    public void setId_empresa(Long id_empresa) {
+        this.id_empresa = id_empresa;
+    }
+
+    public String getNome_funcionario() {
+        return nome_funcionario;
+    }
+
+    public void setNome_funcionario(String nome_funcionario) {
+        this.nome_funcionario = nome_funcionario;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public Cargo getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(Cargo cargo) {
         this.cargo = cargo;
     }
 
-    
+    public StatusFuncionario getStatus() {
+        return status;
+    }
 
-    public long getId() { return id; }
-    public void setId(long id) { this.id = id; }
+    public void setStatus(StatusFuncionario status) {
+        this.status = status;
+    }
 
-    public String getNome() { return nome; }
-    public void setNome(String nome) { this.nome = nome; }
+    public String getCnh() {
+        return cnh;
+    }
 
-    public LocalDate getDataNascimento() { return dataNascimento; }
-    public void setDataNascimento(LocalDate dataNascimento) { this.dataNascimento = dataNascimento; }
-
-    public String getCargo() { return cargo; }
-    public void setCargo(String cargo) { this.cargo = cargo; }
-
-   
+    public void setCnh(String cnh) {
+        this.cnh = cnh;
+    }
 }

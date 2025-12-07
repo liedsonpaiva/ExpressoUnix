@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.johnwilliam.ExpressoUnix.Entities.Objects.Text;
-import com.johnwilliam.ExpressoUnix.Models.AssentoModels;
 
 
 public class Viagem {

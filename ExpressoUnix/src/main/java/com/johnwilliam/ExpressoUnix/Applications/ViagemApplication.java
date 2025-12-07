@@ -3,10 +3,8 @@ package com.johnwilliam.ExpressoUnix.Applications;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
-import com.johnwilliam.ExpressoUnix.Entities.Veiculo;
 import com.johnwilliam.ExpressoUnix.Entities.Viagem;
 
-import com.johnwilliam.ExpressoUnix.Models.VeiculoModels;
 import com.johnwilliam.ExpressoUnix.Models.ViagemModels;
 import com.johnwilliam.ExpressoUnix.Repositories.ViagemRepository;
 
