@@ -1,94 +1,116 @@
 package com.johnwilliam.ExpressoUnix.Models;
 
-import com.johnwilliam.ExpressoUnix.Enums.PresencaPassageiro;
-import com.johnwilliam.ExpressoUnix.Enums.StatusPagamento;
+
+import com.johnwilliam.ExpressoUnix.Enums.StatusPassagem;
 import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.List;
 
 @Entity
-@Table(name = "passagem")
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"id_viagem", "id_assento"})})
+
 public class PassagemModels {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id_passagem;
-
-    @Column(nullable = false)
-    private long id_viagem;
-
-    @Column(nullable = false)
-    private long id_compra;
-
-    @Column(nullable = false)
-    private long id_passageiro;
-
-    @Column(nullable = false, length = 50)
-    private String codigo_bilhete;
+    private Long id;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private StatusPagamento status_pagamento;
+    private StatusPassagem status;
 
-    @Enumerated(EnumType.STRING)
+    @ManyToOne
+    @JoinColumn(name = "id_viagem", referencedColumnName = "id", insertable = false, updatable = false)
+    private ViagemModels viagem;
+    @Column(name = "id_viagem", nullable = false)
+    private long idViagem;
+
+    @ManyToOne
+    @JoinColumn(name = "id_assento", referencedColumnName = "id", insertable = false, updatable = false)
+    private AssentoModels assento;
+    @Column(name = "id_assento", nullable = false)
+    private long idAssento;
+
+    @ManyToOne
+    @JoinColumn(name = "id_passageiro", referencedColumnName = "id", insertable = false, updatable = false)
+    private PassageiroModels passageiro;
+    @Column(name = "id_passageiro", nullable = false)
+    private long idPassageiro;
+
     @Column(nullable = false)
-    private PresencaPassageiro presenca;
-
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String qr_code;
+    private LocalDate dataPassagem;
 
     @Column(nullable = false)
-    private boolean embarque_realizado;
+    private LocalTime horaPassagem;
 
-    @Column(nullable = false)
-    private boolean desembarque_realizado;
+    @Column(nullable = false, length = 100)
+    private String origem;
+
+    @Column(nullable = false, length = 100)
+    private String destino;
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal distancia;
+
+    @Column(nullable = false, precision = 10, scale = 2)
+    private BigDecimal preco;
+
+    @OneToMany(mappedBy = "passagem", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    private List<VendaModels> vendas;
 
     public PassagemModels() {}
 
-    public PassagemModels(long id_viagem, long id_compra, long id_passageiro,
-                          String codigo_bilhete, StatusPagamento status_pagamento,
-                          PresencaPassageiro presenca, String qr_code,
-                          boolean embarque_realizado, boolean desembarque_realizado) {
-
-        this.id_viagem = id_viagem;
-        this.id_compra = id_compra;
-        this.id_passageiro = id_passageiro;
-
-        this.codigo_bilhete = codigo_bilhete;
-        this.status_pagamento = status_pagamento;
-        this.presenca = presenca;
-
-        this.qr_code = qr_code;
-
-        this.embarque_realizado = embarque_realizado;
-        this.desembarque_realizado = desembarque_realizado;
+    public PassagemModels(StatusPassagem status, ViagemModels viagem, AssentoModels assento, PassageiroModels passageiro,
+                    LocalDate dataPassagem, LocalTime horaPassagem, String origem, String destino,
+                    BigDecimal distancia, BigDecimal preco) {
+        this.status = status;
+        this.viagem = viagem;
+        this.idViagem = (viagem != null) ? viagem.getId() : 0;
+        this.assento = assento;
+        this.idAssento = (assento != null) ? assento.getId() : 0;
+        this.passageiro = passageiro;
+        this.idPassageiro = (passageiro != null) ? passageiro.getId() : 0;
+        this.dataPassagem = dataPassagem;
+        this.horaPassagem = horaPassagem;
+        this.origem = origem;
+        this.destino = destino;
+        this.distancia = distancia;
+        this.preco = preco;
     }
 
-    public Long getId_passagem() { return id_passagem; }
-    public void setId_passagem(Long id_passagem) { this.id_passagem = id_passagem; }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public long getId_viagem() { return id_viagem; }
-    public void setId_viagem(long id_viagem) { this.id_viagem = id_viagem; }
+    public StatusPassagem getStatus() { return status; }
+    public void setStatus(StatusPassagem status) { this.status = status; }
 
-    public long getId_compra() { return id_compra; }
-    public void setId_compra(long id_compra) { this.id_compra = id_compra; }
+    public long getIdViagem() { return idViagem; }
+    public void setIdViagem(long idViagem) { this.idViagem = idViagem; }
 
-    public long getId_passageiro() { return id_passageiro; }
-    public void setId_passageiro(long id_passageiro) { this.id_passageiro = id_passageiro; }
+    public long getIdAssento() { return idAssento; }
+    public void setIdAssento(long idAssento) { this.idAssento = idAssento; }
 
-    public String getCodigo_bilhete() { return codigo_bilhete; }
-    public void setCodigo_bilhete(String codigo_bilhete) { this.codigo_bilhete = codigo_bilhete; }
+    public long getIdPassageiro() { return idPassageiro; }
+    public void setIdPassageiro(long idPassageiro) { this.idPassageiro = idPassageiro; }
 
-    public StatusPagamento getStatus_pagamento() { return status_pagamento; }
-    public void setStatus_pagamento(StatusPagamento status_pagamento) { this.status_pagamento = status_pagamento; }
+    public LocalDate getDataPassagem() { return dataPassagem; }
+    public void setDataPassagem(LocalDate dataPassagem) { this.dataPassagem = dataPassagem; }
 
-    public PresencaPassageiro getPresenca() { return presenca; }
-    public void setPresenca(PresencaPassageiro presenca) { this.presenca = presenca; }
+    public LocalTime getHoraPassagem() { return horaPassagem; }
+    public void setHoraPassagem(LocalTime horaPassagem) { this.horaPassagem = horaPassagem; }
 
-    public String getQr_code() { return qr_code; }
-    public void setQr_code(String qr_code) { this.qr_code = qr_code; }
+    public String getOrigem() { return origem; }
+    public void setOrigem(String origem) { this.origem = origem; }
 
-    public boolean isEmbarque_realizado() { return embarque_realizado; }
-    public void setEmbarque_realizado(boolean embarque_realizado) { this.embarque_realizado = embarque_realizado; }
+    public String getDestino() { return destino; }
+    public void setDestino(String destino) { this.destino = destino; }
 
-    public boolean isDesembarque_realizado() { return desembarque_realizado; }
-    public void setDesembarque_realizado(boolean desembarque_realizado) { this.desembarque_realizado = desembarque_realizado; }
+    public BigDecimal getDistancia() { return distancia; }
+    public void setDistancia(BigDecimal distancia) { this.distancia = distancia; }
+
+    public BigDecimal getPreco() { return preco; }
+    public void setPreco(BigDecimal preco) { this.preco = preco; }
+
 }
