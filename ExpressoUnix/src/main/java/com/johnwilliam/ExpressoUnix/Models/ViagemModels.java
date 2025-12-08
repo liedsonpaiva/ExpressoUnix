@@ -68,8 +68,7 @@ public class ViagemModels {
     @Column(name = "tipo_viagem", nullable = false, length = 20)
     private TipoViagem tipoViagem;
 
-    @OneToMany(mappedBy = "viagem", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-    private List<AssentoModels> assentos;
+    
 
     @OneToMany(mappedBy = "viagem", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<PassagemModels> passagens;
@@ -239,13 +238,7 @@ public class ViagemModels {
         this.tipoViagem = tipoViagem;
     }
 
-    public List<AssentoModels> getAssentos() {
-        return assentos;
-    }
-
-    public void setAssentos(List<AssentoModels> assentos) {
-        this.assentos = assentos;
-    }
+   
 
     public List<PassagemModels> getPassagens() {
         return passagens;
