@@ -9,6 +9,7 @@ import com.johnwilliam.ExpressoUnix.Entities.Objects.Text;
 import com.johnwilliam.ExpressoUnix.Enums.StatusViagem;
 import com.johnwilliam.ExpressoUnix.Enums.TipoViagem;
 
+
 public class Viagem {
     
     private Long id;

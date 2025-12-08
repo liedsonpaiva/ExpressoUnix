@@ -1,77 +1,75 @@
 package com.johnwilliam.ExpressoUnix.Entities;
 
-
-
 import java.time.LocalDate;
-import java.util.List;
 
-import com.johnwilliam.ExpressoUnix.Entities.Objects.*;
-
-
+import com.johnwilliam.ExpressoUnix.Entities.Objects.CPF;
+import com.johnwilliam.ExpressoUnix.Entities.Objects.DataNascimento;
+import com.johnwilliam.ExpressoUnix.Entities.Objects.Email;
+import com.johnwilliam.ExpressoUnix.Entities.Objects.Telefone;
+import com.johnwilliam.ExpressoUnix.Entities.Objects.Text;
 
 public class Passageiro {
-    
-    private Long id;
-    
+
+    private Long id_passageiro;
     private Text nome;
-    
-    private Email email;
-    
-    private Telefone telefone;
-    
     private CPF cpf;
-    
-    private DataNascimento dataNascimento;
-    
-    private List<Passagem> passagens;
+    private Email email;
+    private Telefone telefone;
+    private DataNascimento data_nascimento;
 
-    
-
-    public Passageiro(String nome, String email, String telefone, String cpf, LocalDate dataNascimento) {
-        this.nome.setText(cpf);
+    public Passageiro(String nome, String cpf, String email, String telefone, LocalDate dataNascimento) {
+        this.nome = new Text(nome);
+        this.cpf = new CPF(cpf);
         this.email = new Email(email);
         this.telefone = new Telefone(telefone);
-        this.cpf = new CPF(cpf);
-        this.dataNascimento = new DataNascimento(dataNascimento);
+        this.data_nascimento = new DataNascimento(dataNascimento);
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId_passageiro() {
+        return id_passageiro;
+    }
 
-    public String getNome() {
-         return nome.toString(); 
-        }
+    public void setId_passageiro(Long id_passageiro) {
+        this.id_passageiro = id_passageiro;
+    }
+
+    public Text getNome() {
+        return nome;
+    }
+
     public void setNome(String nome) {
-         this.nome.setText(nome);  
-        }
+        this.nome.setText(nome);
+    }
 
-    public String getEmail() {
-         return email.toString(); 
-        }
-    public void setEmail(String email) {
-         this.email.setEmail(email); 
-        }
+    public CPF getCpf() {
+        return cpf;
+    }
 
-    public String getTelefone() {
-         return telefone.toString(); 
-        }
-    public void setTelefone(String telefone) {
-         this.telefone.setTelefone(telefone); 
-        }
-
-    public String getCpf() {
-         return cpf.toString(); 
-        }
     public void setCpf(String cpf) {
-         this.cpf.setCpf(cpf); 
-        }
+        this.cpf.setCpf(cpf);
+    }
 
-    public LocalDate getDataNascimento() {
-         return dataNascimento.getDataNascimento(); 
-        }
-    public void setDataNascimento(LocalDate dataNascimento) {
-         this.dataNascimento.setDataNascimento(dataNascimento);  
-        }
+    public Email getEmail() {
+        return email;
+    }
 
-    
+    public void setEmail(String email) {
+        this.email.setEmail(email);
+    }
+
+    public Telefone getTelefone() {
+        return telefone;
+    }
+
+    public void setTelefone(String telefone) {
+        this.telefone.setTelefone(telefone);
+    }
+
+    public DataNascimento getData_nascimento() {
+        return data_nascimento;
+    }
+
+    public void setData_nascimento(LocalDate dataNascimento) {
+        this.data_nascimento.setDataNascimento(dataNascimento);
+    }
 }

@@ -14,4 +14,7 @@ public enum StatusPagamento {
     public String getDescricao() {
         return descricao;
     }
+    PENDENTE,
+    CONFIRMADO,
+    CANCELADO
 }
