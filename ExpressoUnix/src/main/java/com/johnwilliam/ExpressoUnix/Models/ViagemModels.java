@@ -1,30 +1,25 @@
 package com.johnwilliam.ExpressoUnix.Models;
 
-
 import jakarta.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
+import com.johnwilliam.ExpressoUnix.Enums.StatusViagem;
+import com.johnwilliam.ExpressoUnix.Enums.TipoViagem;
+
 @Entity
+@Table(name = "viagem")
 public class ViagemModels {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_viagem")
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_veiculo", referencedColumnName = "id", insertable = false, updatable = false)
-    private VeiculoModels veiculo;
-
-    @Column(name = "id_veiculo", nullable = false)
-    private long idVeiculo;
-
-    @Column(nullable = false)
-    private LocalDate dataViagem;
-
-    @Column(nullable = false)
-    private LocalTime horaViagem;
+    @Column(name = "id_empresa", nullable = false)
+    private Long idEmpresa;
 
     @Column(nullable = false, length = 100)
     private String origem;
@@ -32,40 +27,231 @@ public class ViagemModels {
     @Column(nullable = false, length = 100)
     private String destino;
 
+    @Column(name = "local_embarque", nullable = false, length = 200)
+    private String localEmbarque;
+
+    @Column(name = "local_desembarque", nullable = false, length = 200)
+    private String localDesembarque;
+
+    @Column(name = "data_saida", nullable = false)
+    private LocalDate dataSaida;
+
+    @Column(name = "data_chegada", nullable = false)
+    private LocalDate dataChegada;
+
+    @Column(name = "horario_saida", nullable = false)
+    private LocalTime horarioSaida;
+
+    @Column(name = "horario_chegada", nullable = false)
+    private LocalTime horarioChegada;
+
+    @Column(name = "duracao_viagem", length = 50)
+    private String duracaoViagem;
+
+    @Column(name = "motorista_responsavel", nullable = false)
+    private Long motoristaResponsavel;
+
+    @Column(name = "preco_passagem", nullable = false, precision = 10, scale = 2)
+    private BigDecimal precoPassagem;
+
+    @Column(name = "total_assentos", nullable = false)
+    private Integer totalAssentos;
+
+    @Column(name = "assentos_ocupados", nullable = false)
+    private Integer assentosOcupados;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private StatusViagem status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_viagem", nullable = false, length = 20)
+    private TipoViagem tipoViagem;
+
     @OneToMany(mappedBy = "viagem", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<AssentoModels> assentos;
 
     @OneToMany(mappedBy = "viagem", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     private List<PassagemModels> passagens;
 
-    public ViagemModels() {}
+    public ViagemModels() {
+        this.assentosOcupados = 0;
+        this.status = StatusViagem.ATIVO;
+    }
 
-    public ViagemModels(VeiculoModels veiculo, LocalDate dataViagem, LocalTime horaViagem, String origem, String destino) {
-        this.veiculo = veiculo;
-        this.idVeiculo = (veiculo != null) ? veiculo.getId() : 0;
-        this.dataViagem = dataViagem;
-        this.horaViagem = horaViagem;
+    public ViagemModels(Long idEmpresa, String origem, String destino, String localEmbarque,
+                        String localDesembarque, LocalDate dataSaida, LocalDate dataChegada,
+                        LocalTime horarioSaida, LocalTime horarioChegada, String duracaoViagem,
+                        Long motoristaResponsavel, BigDecimal precoPassagem, Integer totalAssentos,
+                        TipoViagem tipoViagem) {
+        this.idEmpresa = idEmpresa;
         this.origem = origem;
+        this.destino = destino;
+        this.localEmbarque = localEmbarque;
+        this.localDesembarque = localDesembarque;
+        this.dataSaida = dataSaida;
+        this.dataChegada = dataChegada;
+        this.horarioSaida = horarioSaida;
+        this.horarioChegada = horarioChegada;
+        this.duracaoViagem = duracaoViagem;
+        this.motoristaResponsavel = motoristaResponsavel;
+        this.precoPassagem = precoPassagem;
+        this.totalAssentos = totalAssentos;
+        this.assentosOcupados = 0;
+        this.status = StatusViagem.ATIVO;
+        this.tipoViagem = tipoViagem;
+    }
+
+    // Getters and Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getIdEmpresa() {
+        return idEmpresa;
+    }
+
+    public void setIdEmpresa(Long idEmpresa) {
+        this.idEmpresa = idEmpresa;
+    }
+
+    public String getOrigem() {
+        return origem;
+    }
+
+    public void setOrigem(String origem) {
+        this.origem = origem;
+    }
+
+    public String getDestino() {
+        return destino;
+    }
+
+    public void setDestino(String destino) {
         this.destino = destino;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public String getLocalEmbarque() {
+        return localEmbarque;
+    }
 
-    public long getIdVeiculo() { return idVeiculo; }
-    public void setIdVeiculo(long idVeiculo) { this.idVeiculo = idVeiculo; }
+    public void setLocalEmbarque(String localEmbarque) {
+        this.localEmbarque = localEmbarque;
+    }
 
-    public LocalDate getDataViagem() { return dataViagem; }
-    public void setDataViagem(LocalDate dataViagem) { this.dataViagem = dataViagem; }
+    public String getLocalDesembarque() {
+        return localDesembarque;
+    }
 
-    public LocalTime getHoraViagem() { return horaViagem; }
-    public void setHoraViagem(LocalTime horaViagem) { this.horaViagem = horaViagem; }
+    public void setLocalDesembarque(String localDesembarque) {
+        this.localDesembarque = localDesembarque;
+    }
 
-    public String getOrigem() { return origem; }
-    public void setOrigem(String origem) { this.origem = origem; }
+    public LocalDate getDataSaida() {
+        return dataSaida;
+    }
 
-    public String getDestino() { return destino; }
-    public void setDestino(String destino) { this.destino = destino; }
+    public void setDataSaida(LocalDate dataSaida) {
+        this.dataSaida = dataSaida;
+    }
 
-    
+    public LocalDate getDataChegada() {
+        return dataChegada;
+    }
+
+    public void setDataChegada(LocalDate dataChegada) {
+        this.dataChegada = dataChegada;
+    }
+
+    public LocalTime getHorarioSaida() {
+        return horarioSaida;
+    }
+
+    public void setHorarioSaida(LocalTime horarioSaida) {
+        this.horarioSaida = horarioSaida;
+    }
+
+    public LocalTime getHorarioChegada() {
+        return horarioChegada;
+    }
+
+    public void setHorarioChegada(LocalTime horarioChegada) {
+        this.horarioChegada = horarioChegada;
+    }
+
+    public String getDuracaoViagem() {
+        return duracaoViagem;
+    }
+
+    public void setDuracaoViagem(String duracaoViagem) {
+        this.duracaoViagem = duracaoViagem;
+    }
+
+    public Long getMotoristaResponsavel() {
+        return motoristaResponsavel;
+    }
+
+    public void setMotoristaResponsavel(Long motoristaResponsavel) {
+        this.motoristaResponsavel = motoristaResponsavel;
+    }
+
+    public BigDecimal getPrecoPassagem() {
+        return precoPassagem;
+    }
+
+    public void setPrecoPassagem(BigDecimal precoPassagem) {
+        this.precoPassagem = precoPassagem;
+    }
+
+    public Integer getTotalAssentos() {
+        return totalAssentos;
+    }
+
+    public void setTotalAssentos(Integer totalAssentos) {
+        this.totalAssentos = totalAssentos;
+    }
+
+    public Integer getAssentosOcupados() {
+        return assentosOcupados;
+    }
+
+    public void setAssentosOcupados(Integer assentosOcupados) {
+        this.assentosOcupados = assentosOcupados;
+    }
+
+    public StatusViagem getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusViagem status) {
+        this.status = status;
+    }
+
+    public TipoViagem getTipoViagem() {
+        return tipoViagem;
+    }
+
+    public void setTipoViagem(TipoViagem tipoViagem) {
+        this.tipoViagem = tipoViagem;
+    }
+
+    public List<AssentoModels> getAssentos() {
+        return assentos;
+    }
+
+    public void setAssentos(List<AssentoModels> assentos) {
+        this.assentos = assentos;
+    }
+
+    public List<PassagemModels> getPassagens() {
+        return passagens;
+    }
+
+    public void setPassagens(List<PassagemModels> passagens) {
+        this.passagens = passagens;
+    }
 }
