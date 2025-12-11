@@ -1,8 +1,13 @@
 package com.johnwilliam.ExpressoUnix.Models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import java.util.List;
 
 @Entity
+@Table(name = "empresa")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class EmpresaModels {
 
     @Id
@@ -21,14 +26,10 @@ public class EmpresaModels {
     @Column(nullable = false, length = 15)
     private String telefoneContato;
 
-    @Column(name = "id_endereco", nullable = false)
-    private long idEndereco;
-
-    /*
-    @OneToOne
-    @JoinColumn(name = "id_endereco", referencedColumnName = "id", insertable = false, updatable = false)
+    // Relacionamento 1-1 com Endereco
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_endereco", referencedColumnName = "id")
     private EnderecoModels endereco;
-    */
 
     @Column(nullable = false, length = 150)
     private String representanteNome;
@@ -51,13 +52,21 @@ public class EmpresaModels {
     @Column(nullable = true, length = 255)
     private String urlFotoCapa;
 
+    // Relacionamento 1-N com Funcionario
+    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
+    private List<FuncionarioModels> funcionarios;
+
+    // Relacionamento 1-N com Viagem
+    @OneToMany(mappedBy = "empresa", cascade = CascadeType.ALL)
+    private List<ViagemModels> viagens;
+
     public EmpresaModels() {}
 
     public EmpresaModels(String razaoSocial,
                          String cnpj,
                          String emailContato,
                          String telefoneContato,
-                         //EnderecoModels endereco,
+                         EnderecoModels endereco,
                          String representanteNome,
                          String representanteCpf,
                          String representanteEmail,
@@ -69,7 +78,7 @@ public class EmpresaModels {
         this.cnpj = cnpj;
         this.emailContato = emailContato;
         this.telefoneContato = telefoneContato;
-        //this.endereco = endereco;
+        this.endereco = endereco;
         this.representanteNome = representanteNome;
         this.representanteCpf = representanteCpf;
         this.representanteEmail = representanteEmail;
@@ -119,12 +128,12 @@ public class EmpresaModels {
         this.telefoneContato = telefoneContato;
     }
 
-    public long getIdEndereco() {
-        return idEndereco;
+    public EnderecoModels getEndereco() {
+        return endereco;
     }
 
-    public void setIdEndereco(long idEndereco) {
-        this.idEndereco = idEndereco;
+    public void setEndereco(EnderecoModels endereco) {
+        this.endereco = endereco;
     }
 
     public String getRepresentanteNome() {
@@ -181,5 +190,21 @@ public class EmpresaModels {
 
     public void setUrlFotoCapa(String urlFotoCapa) {
         this.urlFotoCapa = urlFotoCapa;
+    }
+
+    public List<FuncionarioModels> getFuncionarios() {
+        return funcionarios;
+    }
+
+    public void setFuncionarios(List<FuncionarioModels> funcionarios) {
+        this.funcionarios = funcionarios;
+    }
+
+    public List<ViagemModels> getViagens() {
+        return viagens;
+    }
+
+    public void setViagens(List<ViagemModels> viagens) {
+        this.viagens = viagens;
     }
 }

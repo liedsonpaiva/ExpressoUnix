@@ -1,5 +1,7 @@
 package com.johnwilliam.ExpressoUnix.Models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -11,12 +13,18 @@ import com.johnwilliam.ExpressoUnix.Enums.TipoViagem;
 
 @Entity
 @Table(name = "viagem")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class ViagemModels {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_viagem")
     private Long id;
+
+    // Relacionamento N-1 com Empresa
+    @ManyToOne
+    @JoinColumn(name = "id_empresa", referencedColumnName = "id", insertable = false, updatable = false)
+    private EmpresaModels empresa;
 
     @Column(name = "id_empresa", nullable = false)
     private Long idEmpresa;
@@ -48,6 +56,11 @@ public class ViagemModels {
     @Column(name = "duracao_viagem", length = 50)
     private String duracaoViagem;
 
+    // Relacionamento N-1 com Funcionario (Motorista)
+    @ManyToOne
+    @JoinColumn(name = "motorista_responsavel", referencedColumnName = "id_funcionario", insertable = false, updatable = false)
+    private FuncionarioModels motorista;
+
     @Column(name = "motorista_responsavel", nullable = false)
     private Long motoristaResponsavel;
 
@@ -68,9 +81,8 @@ public class ViagemModels {
     @Column(name = "tipo_viagem", nullable = false, length = 20)
     private TipoViagem tipoViagem;
 
-    
-
-    @OneToMany(mappedBy = "viagem", cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    // Relacionamento 1-N com Passagem
+    @OneToMany(mappedBy = "viagem", cascade = CascadeType.ALL)
     private List<PassagemModels> passagens;
 
     public ViagemModels() {
@@ -116,6 +128,14 @@ public class ViagemModels {
 
     public void setIdEmpresa(Long idEmpresa) {
         this.idEmpresa = idEmpresa;
+    }
+
+    public EmpresaModels getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(EmpresaModels empresa) {
+        this.empresa = empresa;
     }
 
     public String getOrigem() {
@@ -198,6 +218,14 @@ public class ViagemModels {
         this.motoristaResponsavel = motoristaResponsavel;
     }
 
+    public FuncionarioModels getMotorista() {
+        return motorista;
+    }
+
+    public void setMotorista(FuncionarioModels motorista) {
+        this.motorista = motorista;
+    }
+
     public BigDecimal getPrecoPassagem() {
         return precoPassagem;
     }
@@ -237,8 +265,6 @@ public class ViagemModels {
     public void setTipoViagem(TipoViagem tipoViagem) {
         this.tipoViagem = tipoViagem;
     }
-
-   
 
     public List<PassagemModels> getPassagens() {
         return passagens;

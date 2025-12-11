@@ -1,20 +1,29 @@
 package com.johnwilliam.ExpressoUnix.Models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.johnwilliam.ExpressoUnix.Enums.MetodoPagamento;
 import com.johnwilliam.ExpressoUnix.Enums.StatusPagamento;
 
 @Entity
 @Table(name = "compra")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class CompraModels {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_compra")
     private Long id;
+
+    // Relacionamento N-1 com Passageiro
+    @ManyToOne
+    @JoinColumn(name = "id_passageiro", referencedColumnName = "id_passageiro", insertable = false, updatable = false)
+    private PassageiroModels passageiro;
 
     @Column(name = "id_passageiro", nullable = false)
     private Long idPassageiro;
@@ -35,6 +44,10 @@ public class CompraModels {
 
     @Column(name = "comprovante_pagamento_url", length = 500)
     private String comprovantePagamentoUrl;
+
+    // Relacionamento 1-N com Passagem
+    @OneToMany(mappedBy = "compra", cascade = CascadeType.ALL)
+    private List<PassagemModels> passagens;
 
     public CompraModels() {
         this.dataCompra = LocalDateTime.now();
@@ -66,6 +79,14 @@ public class CompraModels {
 
     public void setIdPassageiro(Long idPassageiro) {
         this.idPassageiro = idPassageiro;
+    }
+
+    public PassageiroModels getPassageiro() {
+        return passageiro;
+    }
+
+    public void setPassageiro(PassageiroModels passageiro) {
+        this.passageiro = passageiro;
     }
 
     public LocalDateTime getDataCompra() {
@@ -106,5 +127,13 @@ public class CompraModels {
 
     public void setComprovantePagamentoUrl(String comprovantePagamentoUrl) {
         this.comprovantePagamentoUrl = comprovantePagamentoUrl;
+    }
+
+    public List<PassagemModels> getPassagens() {
+        return passagens;
+    }
+
+    public void setPassagens(List<PassagemModels> passagens) {
+        this.passagens = passagens;
     }
 }

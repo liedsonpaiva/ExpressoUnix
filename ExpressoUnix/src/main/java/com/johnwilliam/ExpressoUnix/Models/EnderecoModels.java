@@ -1,8 +1,12 @@
 package com.johnwilliam.ExpressoUnix.Models;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "endereco")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class EnderecoModels {
 
     @Id
@@ -26,6 +30,10 @@ public class EnderecoModels {
 
     @Column(nullable = false)
     private String logradouro;
+
+    // Relacionamento 1-1 com Empresa (opcional, bidirecional)
+    @OneToOne(mappedBy = "endereco")
+    private EmpresaModels empresa;
 
     public EnderecoModels() {}
 
@@ -59,6 +67,7 @@ public class EnderecoModels {
     public void setCep(String cep) {
         this.cep = cep;
     }
+
     public String getEstado() {
         return estado;
     }
@@ -97,5 +106,13 @@ public class EnderecoModels {
 
     public void setLogradouro(String logradouro) {
         this.logradouro = logradouro;
+    }
+
+    public EmpresaModels getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(EmpresaModels empresa) {
+        this.empresa = empresa;
     }
 }
