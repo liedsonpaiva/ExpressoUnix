@@ -1,6 +1,8 @@
 package com.johnwilliam.ExpressoUnix.Applications;
 
 import java.util.List;
+
+import com.johnwilliam.ExpressoUnix.Infra.QrCodeService;
 import org.springframework.stereotype.Service;
 
 import com.johnwilliam.ExpressoUnix.Models.PassagemModels;
@@ -15,6 +17,8 @@ public class PassagemApplication {
     }
     
     public void createPassagem(PassagemModels passagem){
+        byte[] QrCodeAsPngFile = QrCodeService.generateQRCode(passagem.getCodigo_bilhete());
+        passagem.setQr_code(QrCodeAsPngFile);
         passagemRepository.createPassagem(passagem);
     }
     

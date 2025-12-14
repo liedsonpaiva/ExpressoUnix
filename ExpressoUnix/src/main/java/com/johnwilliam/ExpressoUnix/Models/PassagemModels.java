@@ -50,8 +50,9 @@ public class PassagemModels {
     @Column(nullable = false)
     private PresencaPassageiro presenca;
 
-    @Column(nullable = false, columnDefinition = "TEXT")
-    private String qr_code;
+    @Lob
+    @Column(nullable = false, columnDefinition = "BLOB")
+    private byte[] qr_code;
 
     @Column(nullable = false)
     private boolean embarque_realizado;
@@ -61,21 +62,20 @@ public class PassagemModels {
 
     public PassagemModels() {}
 
-    public PassagemModels(long id_viagem, long id_compra, long id_passageiro,
-                          String codigo_bilhete, StatusPagamento status_pagamento,
-                          PresencaPassageiro presenca, String qr_code,
-                          boolean embarque_realizado, boolean desembarque_realizado) {
-
+    public PassagemModels(long id_viagem,
+                          long id_compra,
+                          long id_passageiro,
+                          String codigo_bilhete,
+                          StatusPagamento status_pagamento,
+                          PresencaPassageiro presenca,
+                          boolean embarque_realizado,
+                          boolean desembarque_realizado) {
         this.id_viagem = id_viagem;
         this.id_compra = id_compra;
         this.id_passageiro = id_passageiro;
-
         this.codigo_bilhete = codigo_bilhete;
         this.status_pagamento = status_pagamento;
         this.presenca = presenca;
-
-        this.qr_code = qr_code;
-
         this.embarque_realizado = embarque_realizado;
         this.desembarque_realizado = desembarque_realizado;
     }
@@ -160,11 +160,10 @@ public class PassagemModels {
         this.presenca = presenca;
     }
 
-    public String getQr_code() {
+    public byte[] getQr_code() {
         return qr_code;
     }
-
-    public void setQr_code(String qr_code) {
+    public void setQr_code(byte[] qr_code) {
         this.qr_code = qr_code;
     }
 
